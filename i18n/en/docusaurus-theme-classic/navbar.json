@@ -27,8 +27,8 @@
     "message": "Guide",
     "description": "Navbar item with label 指南"
   },
-  "item.label.博客": {
-    "message": "Blog",
-    "description": "Navbar item with label 博客"
+  "item.label.发布日志": {
+    "message": "Release Notes",
+    "description": "Navbar item with label 发布日志"
   }
 }

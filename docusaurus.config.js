@@ -100,7 +100,7 @@ const config = {
             position: 'left',
             label: '指南',
           },
-          { to: '/blog', label: '博客', position: 'left' },
+          { to: '/blog', label: '发布日志', position: 'left' },
           {
             href: 'https://github.com/facebook/docusaurus',
             label: 'GitHub',
