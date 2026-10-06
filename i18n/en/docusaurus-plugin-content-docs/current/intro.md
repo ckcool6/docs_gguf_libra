@@ -5,7 +5,7 @@ title: Agent Design Based on Forgetting Mechanism
 ---
 
 
-# Agent Design Based on Forgetting Mechanism: Determining What to Forget by Weighing Dialogues
+# Agent Design Based on Forgetting Mechanism
 
 ## Introduction
 
