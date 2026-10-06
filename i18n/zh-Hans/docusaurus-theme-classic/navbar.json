@@ -1,0 +1,22 @@
+{
+  "title": {
+    "message": "My Site",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "My Site Logo",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.指南": {
+    "message": "指南",
+    "description": "Navbar item with label 指南"
+  },
+  "item.label.发布日志": {
+    "message": "发布日志",
+    "description": "Navbar item with label 发布日志"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
+  }
+}

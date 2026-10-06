@@ -326,32 +326,29 @@
     "message": "Tags",
     "description": "The title of the tag list page"
   },
-  "homepage.getStarted": {
-    "message": "Get Started"
-  },
   "homepage.feature.outOfBox.title": {
     "message": "Out of the Box"
   },
   "homepage.feature.outOfBox.desc": {
-    "message": "Focus on content creation with zero complex setup, built for technical documentation."
+    "message": "Zero complex configuration. Focus on content creation, purpose-built for technical documentation and knowledge bases."
   },
   "homepage.feature.markdown.title": {
     "message": "Native Markdown Support"
   },
   "homepage.feature.markdown.desc": {
-    "message": "Full support for CommonMark, GFM, and rich syntax extensions. Writing feels like coding."
+    "message": "Full support for CommonMark, GFM, and rich-text extensions—write documentation just like code."
   },
   "homepage.feature.fastBuild.title": {
-    "message": "Blazing Fast Static Build"
+    "message": "Blazing-Fast Static Builds"
   },
   "homepage.feature.fastBuild.desc": {
-    "message": "Powered by modern static site generation with optimal performance and SEO."
+    "message": "Powered by modern static site generation, delivering top-tier loading speeds and outstanding SEO."
   },
   "homepage.badge.version": {
     "message": "v1.0.0 Released"
   },
   "homepage.badge.text": {
-    "message": "Brand new documentation system is live 🎉"
+    "message": "Brand-new documentation system is live 🎉"
   },
   "homepage.button.getStarted": {
     "message": "Get Started"

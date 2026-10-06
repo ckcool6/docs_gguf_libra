@@ -7,28 +7,16 @@
     "message": "My Site Logo",
     "description": "The alt text of navbar logo"
   },
-  "item.label.Tutorial": {
-    "message": "Tutorial",
-    "description": "Navbar item with label Tutorial"
-  },
-  "item.label.Blog": {
-    "message": "Blog",
-    "description": "Navbar item with label Blog"
-  },
-  "item.label.GitHub": {
-    "message": "GitHub",
-    "description": "Navbar item with label GitHub"
-  },
-  "item.label.Guide": {
-    "message": "Guide",
-    "description": "Navbar item with label Guide"
-  },
   "item.label.指南": {
-    "message": "Guide",
+    "message": "Guides",
     "description": "Navbar item with label 指南"
   },
   "item.label.发布日志": {
     "message": "Release Notes",
     "description": "Navbar item with label 发布日志"
+  },
+  "item.label.GitHub": {
+    "message": "GitHub",
+    "description": "Navbar item with label GitHub"
   }
 }
