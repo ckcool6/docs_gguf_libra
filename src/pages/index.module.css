@@ -1,209 +1,284 @@
-/* Hero 区域：Material 风格浅色渐变背景 */
+/* Hero 区域 */
 .heroSection {
-  padding: 5rem 0 3rem;
+  padding: 4.5rem 0 1rem;
   text-align: center;
-  position: relative;
-  background: transparent;
+  overflow: hidden;
 }
 
-/* 小徽章 Pill Badge */
-.badgeWrapper {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: var(--ifm-color-emphasis-100);
-  border: 1px solid var(--ifm-color-emphasis-200);
-  border-radius: 9999px;
-  padding: 0.25rem 0.75rem;
-  margin-bottom: 1.5rem;
-  font-size: 0.85rem;
-}
-
-.badge {
-  background-color: var(--ifm-color-primary);
-  color: #fff;
-  padding: 0.15rem 0.5rem;
-  border-radius: 9999px;
-  font-weight: 600;
-  font-size: 0.75rem;
-}
-
-.badgeText {
-  color: var(--ifm-color-emphasis-700);
-}
-
-/* 大标题与副标 */
 .heroTitle {
-  font-size: 3.5rem;
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  margin-bottom: 1rem;
+  margin-bottom: 0.8rem;
 }
 
 .heroSubtitle {
   font-size: 1.25rem;
   color: var(--ifm-color-emphasis-600);
-  max-width: 600px;
-  margin: 0 auto 2rem;
-  line-height: 1.6;
+  max-width: 650px;
+  margin: 0 auto 2.2rem;
 }
 
-/* 按钮样式 */
-.actionButtons {
+/* 按钮组 */
+.actionRow {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3.5rem;
 }
 
-.primaryButton {
+.pillPrimaryButton {
   background-color: var(--ifm-color-primary);
   color: #fff !important;
+  font-size: 1.05rem;
   font-weight: 600;
-  border-radius: 8px;
-  padding: 0.75rem 1.75rem;
+  padding: 0.85rem 2.5rem;
+  border-radius: 9999px;
   border: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--ifm-color-primary) 35%, transparent);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.primaryButton:hover {
+.pillPrimaryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(var(--ifm-color-primary-rgb), 0.3);
+  box-shadow: 0 6px 20px color-mix(in srgb, var(--ifm-color-primary) 50%, transparent);
 }
 
-.arrow {
-  margin-left: 0.25rem;
-  transition: transform 0.15s ease;
-  display: inline-block;
-}
-
-.primaryButton:hover .arrow {
-  transform: translateX(3px);
-}
-
-.secondaryButton {
+.pillSecondaryButton {
   background-color: transparent;
-  color: var(--ifm-color-emphasis-800) !important;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 8px;
-  padding: 0.75rem 1.75rem;
+  color: var(--ifm-font-color-base) !important;
+  font-size: 1.05rem;
   font-weight: 600;
-  transition: all 0.15s ease;
+  padding: 0.85rem 2rem;
+  border-radius: 9999px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  transition: all 0.2s;
 }
 
-.secondaryButton:hover {
+.pillSecondaryButton:hover {
   background-color: var(--ifm-color-emphasis-100);
-  border-color: var(--ifm-color-emphasis-400);
 }
 
-/* 仿终端代码块 */
-/* 仿终端代码块（固定深色高对比度） */
-.terminalCard {
-  max-width: 480px;
-  margin: 0 auto;
-  background-color: #1e1e24 !important;
-  /* 固定为深色背景 */
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
+/* =========================================
+   横向画廊与动态放大缩小样式
+   ========================================= */
+.showcaseOuterWrapper {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  position: relative;
+}
+
+.showcaseWrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2.5rem 0 1.5rem;
+  /* 顶部预留出 2.5rem 空间供卡片向上放大 */
+  scrollbar-width: none;
+}
+
+.showcaseWrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.showcaseTrack {
+  display: inline-flex;
+  align-items: flex-end;
+  /* 底部绝对齐平 */
+  gap: 3rem;
+  padding: 0 max(8vw, calc((100vw - 680px) / 2));
+}
+
+/* 统一电脑卡片基础尺寸 */
+.browserCard {
+  width: 640px;
+  height: 420px;
+  border-radius: 16px 16px 0 0;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-bottom: none;
+  background: var(--ifm-card-background-color);
   overflow: hidden;
-  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.25);
   text-align: left;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  /* 关键：以底部中心为原点缩放，放大时向上生长，底部始终水平对齐 */
+  transform-origin: bottom center;
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    opacity 0.4s ease,
+    box-shadow 0.4s ease;
 }
 
-.terminalHeader {
+/* ★ 处于聚光灯焦点的卡片：放大 1.1 倍，高亮阴影，最顶层 */
+.activeCard {
+  transform: scale(1.1);
+  opacity: 1;
+  z-index: 3;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.28);
+}
+
+/* ★ 未处于焦点的卡片：缩小到 0.88 倍，半透明弱化 */
+.inactiveCard {
+  transform: scale(0.88);
+  opacity: 0.65;
+  z-index: 1;
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.1);
+}
+
+/* 截图自适应 */
+.screenImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top left;
+  display: block;
+}
+
+/* 顶栏控制条 */
+.browserHeader {
   display: flex;
   align-items: center;
-  padding: 0.6rem 0.85rem;
-  background-color: #16161a !important;
-  /* 标题栏稍微更深一点 */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.75rem 1.1rem;
+  background: var(--ifm-color-emphasis-100);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  gap: 0.8rem;
 }
 
-.terminalDot {
+.windowControls {
+  display: flex;
+  gap: 6px;
+}
+
+.macDot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  margin-right: 6px;
 }
 
 .dotRed {
-  background: #ff5f56;
+  background-color: #ff5f57;
 }
 
 .dotYellow {
-  background: #ffbd2e;
+  background-color: #febc2e;
 }
 
 .dotGreen {
-  background: #27c93f;
+  background-color: #28c840;
 }
 
-.terminalTitle {
-  font-size: 0.75rem;
-  color: #9ca3af;
-  margin-left: 0.5rem;
-  font-family: var(--ifm-font-family-monospace);
+.browserTab {
+  background: var(--ifm-card-background-color);
+  padding: 0.3rem 0.85rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
 }
 
-.terminalBody {
-  padding: 1rem 1.25rem;
+.browserContent {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
 }
 
-.terminalBody code {
-  background: transparent !important;
-  border: none !important;
-  color: #f3f4f6 !important;
-  /* 清晰的高亮字色 */
-  font-family: var(--ifm-font-family-monospace);
-  font-size: 0.95rem;
-  padding: 0 !important;
+/* 暗色终端视窗 */
+.darkWindow {
+  background: #18181b;
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
-.commandPrompt {
-  color: #10b981;
-  /* 类似 MkDocs 终端经典的亮绿色提示符 */
-  margin-right: 0.6rem;
-  font-weight: bold;
+.darkWindow .browserHeader {
+  background: #27272a;
+  border-color: rgba(255, 255, 255, 0.08);
 }
 
-/* 特性卡片区域 */
+.darkWindow .browserTab {
+  background: #18181b;
+  color: #e4e4e7;
+}
+
+
+/* Hero 其余基础配置 */
+.heroSection {
+  padding: 4.5rem 0 1rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 0.8rem;
+}
+
+.heroSubtitle {
+  font-size: 1.25rem;
+  color: var(--ifm-color-emphasis-600);
+  max-width: 650px;
+  margin: 0 auto 2.2rem;
+}
+
+.actionRow {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.pillPrimaryButton {
+  background-color: var(--ifm-color-primary);
+  color: #fff !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.85rem 2.5rem;
+  border-radius: 9999px;
+  border: none;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--ifm-color-primary) 35%, transparent);
+  transition: transform 0.2s;
+}
+
+.pillPrimaryButton:hover {
+  transform: translateY(-2px);
+}
+
+.pillSecondaryButton {
+  background-color: transparent;
+  color: var(--ifm-font-color-base) !important;
+  font-size: 1.05rem;
+  font-weight: 600;
+  padding: 0.85rem 2rem;
+  border-radius: 9999px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+}
+
 .mainSection {
-  padding: 3rem 0 5rem;
-}
-
-.featureCol {
-  margin-bottom: 1.5rem;
+  padding: 4rem 0;
 }
 
 .card {
-  height: 100%;
-  padding: 1.75rem;
-  border-radius: 12px;
+  padding: 2rem;
+  border-radius: 16px;
   border: 1px solid var(--ifm-color-emphasis-200);
   background-color: var(--ifm-card-background-color);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-}
-
-.card:hover {
-  transform: translateY(-4px);
-  border-color: var(--ifm-color-primary);
-  box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.08);
+  height: 100%;
 }
 
 .cardIcon {
   font-size: 2rem;
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .cardTitle {
-  font-size: 1.2rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
+  margin-bottom: 0.5rem;
 }
 
-.cardDescription {
+.cardDesc {
   color: var(--ifm-color-emphasis-600);
   font-size: 0.95rem;
-  line-height: 1.6;
-  margin: 0;
 }

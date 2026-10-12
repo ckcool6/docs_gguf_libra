@@ -1,131 +1,249 @@
+import React, { useRef, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
-import Translate from '@docusaurus/Translate';
 import styles from './index.module.css';
 
-// 核心特性列表（JSX 支持直接嵌入 <Translate>，便于命令行自动抽取词条）
+// 核心特性列表
 const FeatureList = [
-  {
-    title: (
-      <Translate id="homepage.feature.outOfBox.title">
-        开箱即用
-      </Translate>
-    ),
-    icon: '⚡',
-    description: (
-      <Translate id="homepage.feature.outOfBox.desc">
-        无需繁琐配置，专注内容创作，专为技术文档与知识库打造。
-      </Translate>
-    ),
-  },
-  {
-    title: (
-      <Translate id="homepage.feature.markdown.title">
-        Markdown 原生支持
-      </Translate>
-    ),
-    icon: '📝',
-    description: (
-      <Translate id="homepage.feature.markdown.desc">
-        全面支持 CommonMark、GFM 与富文本扩展语法，写作如同编写代码。
-      </Translate>
-    ),
-  },
-  {
-    title: (
-      <Translate id="homepage.feature.fastBuild.title">
-        极速静态构建
-      </Translate>
-    ),
-    icon: '🚀',
-    description: (
-      <Translate id="homepage.feature.fastBuild.desc">
-        依托现代静态站点生成技术，极致的加载性能与优秀的 SEO 表现。
-      </Translate>
-    ),
-  },
+  { title: '开箱即用', icon: '⚡', description: '专为技术文档与知识库打造，无需复杂配置。' },
+  { title: 'Markdown 支持', icon: '📝', description: '全面支持 MDX 与富文本语法，写作如同编写代码。' },
+  { title: '极速静态构建', icon: '🚀', description: '依托现代静态站点生成技术，加载性能极致优异。' },
 ];
+
+// 单个视窗组件（接收 isActive 属性控制放大/缩小）
+function BrowserWindow({ title, isActive, isDark, onClick, children }) {
+  return (
+    <div
+      onClick={onClick}
+      style={{ cursor: isActive ? 'default' : 'pointer' }}
+      className={clsx(
+        styles.browserCard,
+        isActive ? styles.activeCard : styles.inactiveCard,
+        isDark && styles.darkWindow
+      )}>
+      <div className={styles.browserHeader}>
+        <div className={styles.windowControls}>
+          <span className={clsx(styles.macDot, styles.dotRed)} />
+          <span className={clsx(styles.macDot, styles.dotYellow)} />
+          <span className={clsx(styles.macDot, styles.dotGreen)} />
+        </div>
+        <div className={styles.browserTab}>
+          <span className={styles.tabIcon}>{isDark ? '💻' : '📄'}</span>
+          <span className={styles.tabTitle}>{title}</span>
+        </div>
+      </div>
+      <div className={styles.browserContent}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// 动态焦点画廊
+function ShowcaseReel() {
+  const scrollRef = useRef(null);
+  // 当前聚焦的卡片索引：0 为左，1 为中，2 为右
+  const [activeIndex, setActiveIndex] = useState(1);
+  const activeIndexRef = useRef(1);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    // 1. 初次加载：中间居中
+    let targetScroll = (el.scrollWidth - el.clientWidth) / 2;
+    el.scrollLeft = targetScroll;
+
+    let isAnimating = false;
+    let rafId = null;
+
+    // 检查并更新当前哪张卡片该放大
+    const checkActiveCard = () => {
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      if (maxScroll <= 0) return;
+
+      const progress = el.scrollLeft / maxScroll; // 滚动百分比 0 ~ 1
+      let nextIndex = 1;
+
+      if (progress < 0.28) {
+        nextIndex = 0; // 滚到最左侧：第 0 张放大
+      } else if (progress > 0.72) {
+        nextIndex = 2; // 滚到最右侧：第 2 张放大
+      } else {
+        nextIndex = 1; // 处于中间：第 1 张放大
+      }
+
+      if (nextIndex !== activeIndexRef.current) {
+        activeIndexRef.current = nextIndex;
+        setActiveIndex(nextIndex);
+      }
+    };
+
+    // 2. 动量缓动动画
+    const updateScroll = () => {
+      const current = el.scrollLeft;
+      const diff = targetScroll - current;
+
+      if (Math.abs(diff) > 0.5) {
+        el.scrollLeft += diff * 0.12;
+        checkActiveCard();
+        rafId = requestAnimationFrame(updateScroll);
+      } else {
+        el.scrollLeft = targetScroll;
+        checkActiveCard();
+        isAnimating = false;
+      }
+    };
+
+    // 3. 滚轮事件监听
+    const handleWheel = (e) => {
+      if (e.deltaY === 0) return;
+
+      const maxScroll = el.scrollWidth - el.clientWidth;
+      const isScrollingDown = e.deltaY > 0;
+
+      const isAtRight = targetScroll >= maxScroll - 8;
+      const isAtLeft = targetScroll <= 8;
+
+      if ((isScrollingDown && isAtRight) || (!isScrollingDown && isAtLeft)) {
+        e.preventDefault();
+        window.scrollBy({ top: e.deltaY, behavior: 'auto' });
+        return;
+      }
+
+      e.preventDefault();
+      targetScroll = Math.max(0, Math.min(maxScroll, targetScroll + e.deltaY * 1.5));
+
+      if (!isAnimating) {
+        isAnimating = true;
+        rafId = requestAnimationFrame(updateScroll);
+      }
+    };
+
+    const handleNativeScroll = () => {
+      if (!isAnimating) {
+        targetScroll = el.scrollLeft;
+        checkActiveCard();
+      }
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: false });
+    el.addEventListener('scroll', handleNativeScroll, { passive: true });
+
+    return () => {
+      el.removeEventListener('wheel', handleWheel);
+      el.removeEventListener('scroll', handleNativeScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  const scrollToCard = (index) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+
+    if (index === 0) {
+      el.scrollTo({ left: 0, behavior: 'smooth' });
+    } else if (index === 1) {
+      el.scrollTo({ left: maxScroll / 2, behavior: 'smooth' });
+    } else if (index === 2) {
+      el.scrollTo({ left: maxScroll, behavior: 'smooth' });
+    }
+  };
+
+  return (
+    <div className={styles.showcaseOuterWrapper}>
+      <div className={styles.showcaseWrapper} ref={scrollRef}>
+        <div className={styles.showcaseTrack}>
+
+          {/* 视窗 1（左） */}
+          <BrowserWindow
+            title="快速上手指南"
+            isActive={activeIndex === 0}
+            isDark={true}
+            onClick={() => scrollToCard(0)}
+          >
+            {/* 可随时换成真实的 <img src="/img/screen1.png" className={styles.screenImg} /> */}
+            <img
+              src="/img/image_left.png"
+              alt="no text"
+              className={styles.screenImg}
+            />
+          </BrowserWindow>
+
+          {/* 视窗 2（中） */}
+          <BrowserWindow
+            title="系统概览主页"
+            isActive={activeIndex === 1}
+            onClick={() => scrollToCard(1)}
+          >
+            {/* 可随时换成真实的 <img src="/img/screen2.png" className={styles.screenImg} /> */}
+            <img
+              src="/img/image_center.png"
+              alt="no text"
+              className={styles.screenImg}
+            />
+          </BrowserWindow>
+
+          {/* 视窗 3（右） */}
+          <BrowserWindow
+            title="构建与部署"
+            isActive={activeIndex === 2}
+            isDark={true}
+            onClick={() => scrollToCard(2)}>
+            {/* 可随时换成真实的 <img src="/img/screen3.png" className={styles.screenImg} /> */}
+            <img
+              src="/img/image_right.png"
+              alt="no text"
+              className={styles.screenImg}
+            />
+          </BrowserWindow>
+
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
     <header className={styles.heroSection}>
       <div className="container">
-        {/* 顶部胶囊徽章 */}
-        <div className={styles.badgeWrapper}>
-          <span className={styles.badge}>
-            <Translate id="homepage.badge.version">v1.0.0 发布</Translate>
-          </span>
-          <span className={styles.badgeText}>
-            <Translate id="homepage.badge.text">全新文档系统上线 🎉</Translate>
-          </span>
-        </div>
-
-        {/* 主标题与副标 */}
-        <Heading as="h1" className={styles.heroTitle}>
-          {siteConfig.title}
-        </Heading>
-        <p className={styles.heroSubtitle}>
-          {siteConfig.tagline}
-        </p>
-
-        {/* 操作按钮组 */}
-        <div className={styles.actionButtons}>
-          <Link
-            className={clsx('button', styles.primaryButton)}
-            to="/docs/intro">
-            <Translate id="homepage.button.getStarted">快速开始</Translate>
-            <span className={styles.arrow}>→</span>
+        <Heading as="h1" className={styles.heroTitle}>{siteConfig.title}</Heading>
+        <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
+        <div className={styles.actionRow}>
+          <Link className={clsx('button', styles.pillPrimaryButton)} to="/docs/intro">
+            立即体验 →
           </Link>
-          <Link
-            className={clsx('button', styles.secondaryButton)}
-            to="https://github.com">
+          <Link className={clsx('button', styles.pillSecondaryButton)} to="https://github.com">
             GitHub
           </Link>
         </div>
-
-        {/* 终端命令行演示卡片 */}
-        <div className={styles.terminalCard}>
-          <div className={styles.terminalHeader}>
-            <span className={clsx(styles.terminalDot, styles.dotRed)}></span>
-            <span className={clsx(styles.terminalDot, styles.dotYellow)}></span>
-            <span className={clsx(styles.terminalDot, styles.dotGreen)}></span>
-            <span className={styles.terminalTitle}>bash</span>
-          </div>
-          <div className={styles.terminalBody}>
-            <code>
-              <span className={styles.commandPrompt}>$</span> npm install your-project
-            </code>
-          </div>
-        </div>
       </div>
+      <ShowcaseReel />
     </header>
   );
 }
 
 function FeatureCard({ title, icon, description }) {
   return (
-    <div className={clsx('col col--4', styles.featureCol)}>
+    <div className="col col--4">
       <div className={styles.card}>
         <div className={styles.cardIcon}>{icon}</div>
-        <Heading as="h3" className={styles.cardTitle}>
-          {title}
-        </Heading>
-        <p className={styles.cardDescription}>{description}</p>
+        <Heading as="h3" className={styles.cardTitle}>{title}</Heading>
+        <p className={styles.cardDesc}>{description}</p>
       </div>
     </div>
   );
 }
 
 export default function Home() {
-  const { siteConfig } = useDocusaurusContext();
   return (
-    <Layout
-      title={siteConfig.title}
-      description={siteConfig.tagline}>
+    <Layout>
       <HomepageHeader />
       <main className={styles.mainSection}>
         <div className="container">

@@ -57,7 +57,7 @@ const config = {
           rehypePlugins: [rehypeKatex],
         },
         blog: {
-          showReadingTime: true,
+          showReadingTime: false,
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
