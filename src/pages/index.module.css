@@ -72,8 +72,8 @@
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2.5rem 0 1.5rem;
-  /* 顶部预留出 2.5rem 空间供卡片向上放大 */
+  /* 关键：把底部 padding 改为 4rem，留足空间让阴影自然淡出，不再被一刀切断 */
+  padding: 2.5rem 0 4rem;
   scrollbar-width: none;
 }
 
@@ -93,36 +93,38 @@
 .browserCard {
   width: 640px;
   height: 420px;
-  border-radius: 16px 16px 0 0;
+  /* 关键：改成四个角全部 16px 圆角，让它像一张真正浮起的精致卡片 */
+  border-radius: 16px;
   border: 1px solid var(--ifm-color-emphasis-200);
-  border-bottom: none;
+  /* 删掉了 border-bottom: none; */
   background: var(--ifm-card-background-color);
   overflow: hidden;
   text-align: left;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
-  /* 关键：以底部中心为原点缩放，放大时向上生长，底部始终水平对齐 */
   transform-origin: bottom center;
   transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
     opacity 0.4s ease,
     box-shadow 0.4s ease;
 }
 
-/* ★ 处于聚光灯焦点的卡片：放大 1.1 倍，高亮阴影，最顶层 */
+/* ★ 激活聚焦的卡片：柔和通透，层次分明 */
 .activeCard {
   transform: scale(1.1);
   opacity: 1;
   z-index: 3;
-  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.28);
+  /* 双层环境光投影：告别厚黑污渍感 */
+  box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.12),
+    0 24px 48px -12px rgba(0, 0, 0, 0.08);
 }
 
-/* ★ 未处于焦点的卡片：缩小到 0.88 倍，半透明弱化 */
+/* ★ 未聚焦的卡片：更轻淡的微投影 */
 .inactiveCard {
   transform: scale(0.88);
   opacity: 0.65;
   z-index: 1;
-  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.06);
 }
 
 /* 截图自适应 */
