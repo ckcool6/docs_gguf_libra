@@ -5,15 +5,119 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
 import styles from './index.module.css';
+import Translate, { translate } from '@docusaurus/Translate';
 
-// 核心特性列表
-const FeatureList = [
-  { title: '开箱即用', icon: '⚡', description: '专为技术文档与知识库打造，无需复杂配置。' },
-  { title: 'Markdown 支持', icon: '📝', description: '全面支持 MDX 与富文本语法，写作如同编写代码。' },
-  { title: '极速静态构建', icon: '🚀', description: '依托现代静态站点生成技术，加载性能极致优异。' },
+
+// =========================================
+// 3 个展台的数据源（黄色、蓝色、绿色主题）
+// =========================================
+const getShowcaseSections = () => [
+  // 第 1 组 (左图右文)
+  {
+    items: [
+      {
+        title: translate({
+          id: 'homepage.showcase.s1.item1.title',
+          message: '打造专属外观',
+        }),
+        desc: translate({
+          id: 'homepage.showcase.s1.item1.desc',
+          message: '随心所欲定制主题色彩、深浅模式及布局细节，让文档站点精准贴合品牌调性。',
+        }),
+        image: '/img/image_left.png',
+        bgColor: '#fbbc04',
+      },
+      {
+        title: translate({
+          id: 'homepage.showcase.s1.item2.title',
+          message: '智能扩展与模块化',
+        }),
+        desc: translate({
+          id: 'homepage.showcase.s1.item2.desc',
+          message: '支持通过插件与 Hook 灵活扩展功能，从搜索组件到图表集成一应俱全。',
+        }),
+        image: '/img/image_center.png',
+        bgColor: '#f9ab00',
+      },
+      {
+        title: translate({
+          id: 'homepage.showcase.s1.item3.title',
+          message: '灵活的多页面路由',
+        }),
+        desc: translate({
+          id: 'homepage.showcase.s1.item3.desc',
+          message: '全自动化的路由解析机制，让知识库管理、博客写作和产品发布顺畅无阻。',
+        }),
+        image: '/img/image_right.png',
+        bgColor: '#e37400',
+      },
+    ],
+  },
+
+  // 第 2 组 (左文右图 - reverse)
+  {
+    items: [
+      {
+        title: translate({
+          id: 'homepage.showcase.s2.item1.title',
+          message: '跨设备无缝浏览与同步',
+        }),
+        desc: translate({
+          id: 'homepage.showcase.s2.item1.desc',
+          message: '在任意设备上登录账户，即可访问已保存的阅读进度、书签与配置，一切尽在掌握。',
+        }),
+        image: '/img/image_center.png',
+        bgColor: '#4285f4',
+      },
+      {
+        title: translate({
+          id: 'homepage.showcase.s2.item2.title',
+          message: '自动填充与密码管理',
+        }),
+        desc: translate({
+          id: 'homepage.showcase.s2.item2.desc',
+          message: '借助现代化安全策略，自动同步你的配置，节省重复输入的繁琐时间。',
+        }),
+        image: '/img/image_right.png',
+        bgColor: '#1a73e8',
+      },
+    ],
+  },
+
+  // 第 3 组 (左图右文)
+  {
+    items: [
+      {
+        title: translate({
+          id: 'homepage.showcase.s3.item1.title',
+          message: '借助静态优化，节省宝贵时间',
+        }),
+        desc: translate({
+          id: 'homepage.showcase.s3.item1.desc',
+          message: '极速预渲染与资源压缩优化，为用户呈现秒级加载的极致阅读体验。',
+        }),
+        image: '/img/image_right.png',
+        bgColor: '#34a853',
+      },
+      {
+        title: translate({
+          id: 'homepage.showcase.s3.item2.title',
+          message: '内置隐私与内容防护',
+        }),
+        desc: translate({
+          id: 'homepage.showcase.s3.item2.desc',
+          message: '全面隔离外部脚本风险，默认开启严格的 CSP 安全策略与隐私沙盒。',
+        }),
+        image: '/img/image_left.png',
+        bgColor: '#1e8e3e',
+      },
+    ],
+  },
 ];
 
-// 单个视窗组件（接收 isActive 属性控制放大/缩小）
+// =========================================
+// 拟态浏览器视窗组件 (顶部画廊使用)
+// =========================================
 function BrowserWindow({ title, isActive, isDark, onClick, children }) {
   return (
     <div
@@ -42,10 +146,11 @@ function BrowserWindow({ title, isActive, isDark, onClick, children }) {
   );
 }
 
-// 动态焦点画廊
+// =========================================
+// 顶部动态焦点画廊组件 (保留原版流畅手感)
+// =========================================
 function ShowcaseReel() {
   const scrollRef = useRef(null);
-  // 当前聚焦的卡片索引：0 为左，1 为中，2 为右
   const [activeIndex, setActiveIndex] = useState(1);
   const activeIndexRef = useRef(1);
 
@@ -53,27 +158,25 @@ function ShowcaseReel() {
     const el = scrollRef.current;
     if (!el) return;
 
-    // 1. 初次加载：中间居中
     let targetScroll = (el.scrollWidth - el.clientWidth) / 2;
     el.scrollLeft = targetScroll;
 
     let isAnimating = false;
     let rafId = null;
 
-    // 检查并更新当前哪张卡片该放大
     const checkActiveCard = () => {
       const maxScroll = el.scrollWidth - el.clientWidth;
       if (maxScroll <= 0) return;
 
-      const progress = el.scrollLeft / maxScroll; // 滚动百分比 0 ~ 1
+      const progress = el.scrollLeft / maxScroll;
       let nextIndex = 1;
 
       if (progress < 0.28) {
-        nextIndex = 0; // 滚到最左侧：第 0 张放大
+        nextIndex = 0;
       } else if (progress > 0.72) {
-        nextIndex = 2; // 滚到最右侧：第 2 张放大
+        nextIndex = 2;
       } else {
-        nextIndex = 1; // 处于中间：第 1 张放大
+        nextIndex = 1;
       }
 
       if (nextIndex !== activeIndexRef.current) {
@@ -82,7 +185,6 @@ function ShowcaseReel() {
       }
     };
 
-    // 2. 动量缓动动画
     const updateScroll = () => {
       const current = el.scrollLeft;
       const diff = targetScroll - current;
@@ -98,7 +200,6 @@ function ShowcaseReel() {
       }
     };
 
-    // 3. 滚轮事件监听
     const handleWheel = (e) => {
       if (e.deltaY === 0) return;
 
@@ -158,56 +259,97 @@ function ShowcaseReel() {
     <div className={styles.showcaseOuterWrapper}>
       <div className={styles.showcaseWrapper} ref={scrollRef}>
         <div className={styles.showcaseTrack}>
-
-          {/* 视窗 1（左） */}
           <BrowserWindow
             title="快速上手指南"
             isActive={activeIndex === 0}
             isDark={true}
             onClick={() => scrollToCard(0)}
           >
-            {/* 可随时换成真实的 <img src="/img/screen1.png" className={styles.screenImg} /> */}
-            <img
-              src="/img/image_left.png"
-              alt="no text"
-              className={styles.screenImg}
-            />
+            <img src="/img/image_left.png" alt="preview 1" className={styles.screenImg} />
           </BrowserWindow>
 
-          {/* 视窗 2（中） */}
           <BrowserWindow
             title="系统概览主页"
             isActive={activeIndex === 1}
             onClick={() => scrollToCard(1)}
           >
-            {/* 可随时换成真实的 <img src="/img/screen2.png" className={styles.screenImg} /> */}
-            <img
-              src="/img/image_center.png"
-              alt="no text"
-              className={styles.screenImg}
-            />
+            <img src="/img/image_center.png" alt="preview 2" className={styles.screenImg} />
           </BrowserWindow>
 
-          {/* 视窗 3（右） */}
           <BrowserWindow
             title="构建与部署"
             isActive={activeIndex === 2}
             isDark={true}
-            onClick={() => scrollToCard(2)}>
-            {/* 可随时换成真实的 <img src="/img/screen3.png" className={styles.screenImg} /> */}
-            <img
-              src="/img/image_right.png"
-              alt="no text"
-              className={styles.screenImg}
-            />
+            onClick={() => scrollToCard(2)}
+          >
+            <img src="/img/image_right.png" alt="preview 3" className={styles.screenImg} />
           </BrowserWindow>
-
         </div>
       </div>
     </div>
   );
 }
 
+// =========================================
+// Google Chrome 风格联动特性展台组件
+// =========================================
+function InteractiveShowcase({ sectionData, reverse = false }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const current = sectionData.items[activeIndex] || sectionData.items[0];
+
+  return (
+    <div className={clsx(styles.featureShowcase, reverse && styles.reverse)}>
+      {/* 视觉卡片区 */}
+      <div
+        className={styles.showcaseVisual}
+        style={{ backgroundColor: current.bgColor }}
+      >
+        <div className={styles.visualInner}>
+          <img
+            src={current.image}
+            alt={current.title}
+            className={styles.showcaseInnerImg}
+          />
+        </div>
+      </div>
+
+      {/* 文本列表区 */}
+      <div className={styles.showcaseContent}>
+        {sectionData.items.map((item, idx) => {
+          const isActive = idx === activeIndex;
+          return (
+            <div
+              key={idx}
+              className={clsx(styles.featureItem, isActive && styles.active)}
+              onClick={() => setActiveIndex(idx)}
+            >
+              <Heading as="h3" className={styles.featureItemTitle}>
+                {item.title}
+              </Heading>
+              {isActive && (
+                <p className={styles.featureItemDesc}>
+                  {item.desc}
+                </p>
+              )}
+            </div>
+          );
+        })}
+
+        {sectionData.ctaText && (
+          <div className={styles.showcaseCta}>
+            <Link className={styles.ctaLink} to={sectionData.ctaLink || '#'}>
+              {sectionData.ctaText}
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// =========================================
+// 头部 Hero 区域
+// =========================================
 function HomepageHeader() {
   const { siteConfig } = useDocusaurusContext();
   return (
@@ -217,7 +359,7 @@ function HomepageHeader() {
         <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
         <div className={styles.actionRow}>
           <Link className={clsx('button', styles.pillPrimaryButton)} to="/docs/intro">
-            立即体验 →
+            <Translate id="homepage.button.getStarted">立即体验 →</Translate>
           </Link>
           <Link className={clsx('button', styles.pillSecondaryButton)} to="https://github.com">
             GitHub
@@ -229,29 +371,29 @@ function HomepageHeader() {
   );
 }
 
-function FeatureCard({ title, icon, description }) {
-  return (
-    <div className="col col--4">
-      <div className={styles.card}>
-        <div className={styles.cardIcon}>{icon}</div>
-        <Heading as="h3" className={styles.cardTitle}>{title}</Heading>
-        <p className={styles.cardDesc}>{description}</p>
-      </div>
-    </div>
-  );
-}
-
+// =========================================
+// 页面主入口
+// =========================================
 export default function Home() {
+  const showcaseSections = getShowcaseSections();
+
   return (
     <Layout>
       <HomepageHeader />
-      <main className={styles.mainSection}>
+      <main className={styles.mainShowcaseSection}>
         <div className="container">
-          <div className="row">
-            {FeatureList.map((props, idx) => (
-              <FeatureCard key={idx} {...props} />
-            ))}
-          </div>
+          <InteractiveShowcase
+            sectionData={showcaseSections[0]}
+            reverse={false}
+          />
+          <InteractiveShowcase
+            sectionData={showcaseSections[1]}
+            reverse={true}
+          />
+          <InteractiveShowcase
+            sectionData={showcaseSections[2]}
+            reverse={false}
+          />
         </div>
       </main>
     </Layout>

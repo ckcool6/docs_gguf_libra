@@ -352,5 +352,47 @@
   },
   "homepage.button.getStarted": {
     "message": "Get Started"
+  },
+  "homepage.showcase.s1.item1.title": {
+    "message": "Custom Look & Feel"
+  },
+  "homepage.showcase.s1.item1.desc": {
+    "message": "Customize theme colors, dark mode, and layout details to perfectly match your brand."
+  },
+  "homepage.showcase.s1.item2.title": {
+    "message": "Modular & Extensible"
+  },
+  "homepage.showcase.s1.item2.desc": {
+    "message": "Extend features seamlessly via plugins and hooks, from full-text search to interactive charts."
+  },
+  "homepage.showcase.s1.item3.title": {
+    "message": "Flexible Page Routing"
+  },
+  "homepage.showcase.s1.item3.desc": {
+    "message": "Automated routing architecture for stress-free docs, blogging, and product documentation."
+  },
+  "homepage.showcase.s2.item1.title": {
+    "message": "Seamless Cross-Device Sync"
+  },
+  "homepage.showcase.s2.item1.desc": {
+    "message": "Access your bookmarks, saved history, and preferences across all devices smoothly."
+  },
+  "homepage.showcase.s2.item2.title": {
+    "message": "Autofill & Security"
+  },
+  "homepage.showcase.s2.item2.desc": {
+    "message": "Securely autofill and sync credentials without repetitive manual typing."
+  },
+  "homepage.showcase.s3.item1.title": {
+    "message": "Blazing-Fast Static Optimizations"
+  },
+  "homepage.showcase.s3.item1.desc": {
+    "message": "Lightning-fast pre-rendering and resource compression deliver sub-second page loads."
+  },
+  "homepage.showcase.s3.item2.title": {
+    "message": "Built-in Security Sandbox"
+  },
+  "homepage.showcase.s3.item2.desc": {
+    "message": "Strict CSP security policies and privacy sandboxing protect your docs from external risks."
   }
 }

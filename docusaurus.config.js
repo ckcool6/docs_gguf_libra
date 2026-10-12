@@ -109,48 +109,26 @@ const config = {
       },
       footer: {
         style: 'light',
-        /* links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/intro',
-              },
-            ],
-          },
-          {
-            title: 'Community',
-            items: [
-              {
-                label: 'Stack Overflow',
-                href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-              },
-              {
-                label: 'Discord',
-                href: 'https://discordapp.com/invite/docusaurus',
-              },
-              {
-                label: 'X',
-                href: 'https://x.com/docusaurus',
-              },
-            ],
-          },
-          {
-            title: 'More',
-            items: [
-              {
-                label: 'Blog',
-                to: '/blog',
-              },
-              {
-                label: 'GitHub',
-                href: 'https://github.com/facebook/docusaurus',
-              },
-            ],
-          },
-        ], */
-        copyright: `Copyright © my name ${new Date().getFullYear()} xxx Project, Inc. `,
+        links: [],
+        copyright: `
+        <div class="minimalFooter">
+          <!-- 社交与联系链接 -->
+          <div class="minimalFooterLinks">
+            <a href="https://github.com/你的GitHub用户名" target="_blank" rel="noopener noreferrer">
+              GitHub ↗
+            </a>
+            <span class="minimalDot">·</span>
+            <a href="mailto:hi@yourdomain.com">
+              hi@yourdomain.com ↗
+            </a>
+          </div>
+
+          <!-- 底部极简版权声明 -->
+          <div class="minimalFooterCopy">
+            Copyright <strong>你的名字</strong> · © ${new Date().getFullYear()} All Rights Reserved.
+          </div>
+        </div>
+      `,
       },
       prism: {
         theme: prismThemes.oneLight,
