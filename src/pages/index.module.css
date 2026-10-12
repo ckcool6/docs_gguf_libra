@@ -1,4 +1,6 @@
-/* Hero 区域 */
+/* =========================================
+   1. Hero 区域 (标题、描述、按钮组)
+   ========================================= */
 .heroSection {
   padding: 4.5rem 0 1rem;
   text-align: center;
@@ -19,12 +21,12 @@
   margin: 0 auto 2.2rem;
 }
 
-/* 按钮组 */
+/* 按钮组 - 这里是控制间距的关键 */
 .actionRow {
   display: flex;
   justify-content: center;
   gap: 1rem;
-  margin-bottom: 3.5rem;
+  margin-bottom: 8rem;
 }
 
 .pillPrimaryButton {
@@ -60,7 +62,7 @@
 }
 
 /* =========================================
-   横向画廊与动态放大缩小样式
+   2. 横向画廊 (Showcase Reel) 样式
    ========================================= */
 .showcaseOuterWrapper {
   width: 100vw;
@@ -72,8 +74,8 @@
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  /* 关键：把底部 padding 改为 4rem，留足空间让阴影自然淡出，不再被一刀切断 */
   padding: 2.5rem 0 4rem;
+  /* 底部 padding 防止阴影被切断 */
   scrollbar-width: none;
 }
 
@@ -84,19 +86,16 @@
 .showcaseTrack {
   display: inline-flex;
   align-items: flex-end;
-  /* 底部绝对齐平 */
   gap: 3rem;
   padding: 0 max(8vw, calc((100vw - 680px) / 2));
 }
 
-/* 统一电脑卡片基础尺寸 */
+/* 浏览器卡片基础样式 */
 .browserCard {
   width: 640px;
   height: 420px;
-  /* 关键：改成四个角全部 16px 圆角，让它像一张真正浮起的精致卡片 */
   border-radius: 16px;
   border: 1px solid var(--ifm-color-emphasis-200);
-  /* 删掉了 border-bottom: none; */
   background: var(--ifm-card-background-color);
   overflow: hidden;
   text-align: left;
@@ -109,17 +108,16 @@
     box-shadow 0.4s ease;
 }
 
-/* ★ 激活聚焦的卡片：柔和通透，层次分明 */
+/* 聚焦状态 */
 .activeCard {
   transform: scale(1.1);
   opacity: 1;
   z-index: 3;
-  /* 双层环境光投影：告别厚黑污渍感 */
   box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.12),
     0 24px 48px -12px rgba(0, 0, 0, 0.08);
 }
 
-/* ★ 未聚焦的卡片：更轻淡的微投影 */
+/* 非聚焦状态 */
 .inactiveCard {
   transform: scale(0.88);
   opacity: 0.65;
@@ -127,7 +125,6 @@
   box-shadow: 0 6px 16px -4px rgba(0, 0, 0, 0.06);
 }
 
-/* 截图自适应 */
 .screenImg {
   width: 100%;
   height: 100%;
@@ -136,7 +133,7 @@
   display: block;
 }
 
-/* 顶栏控制条 */
+/* 浏览器顶栏 */
 .browserHeader {
   display: flex;
   align-items: center;
@@ -186,7 +183,7 @@
   overflow: hidden;
 }
 
-/* 暗色终端视窗 */
+/* 暗色模式适配 */
 .darkWindow {
   background: #18181b;
   border-color: rgba(255, 255, 255, 0.12);
@@ -202,61 +199,9 @@
   color: #e4e4e7;
 }
 
-
-/* Hero 其余基础配置 */
-.heroSection {
-  padding: 4.5rem 0 1rem;
-  text-align: center;
-  overflow: hidden;
-}
-
-.heroTitle {
-  font-size: clamp(2.5rem, 6vw, 4.2rem);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin-bottom: 0.8rem;
-}
-
-.heroSubtitle {
-  font-size: 1.25rem;
-  color: var(--ifm-color-emphasis-600);
-  max-width: 650px;
-  margin: 0 auto 2.2rem;
-}
-
-.actionRow {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 2rem;
-}
-
-.pillPrimaryButton {
-  background-color: var(--ifm-color-primary);
-  color: #fff !important;
-  font-size: 1.05rem;
-  font-weight: 600;
-  padding: 0.85rem 2.5rem;
-  border-radius: 9999px;
-  border: none;
-  box-shadow: 0 4px 14px color-mix(in srgb, var(--ifm-color-primary) 35%, transparent);
-  transition: transform 0.2s;
-}
-
-.pillPrimaryButton:hover {
-  transform: translateY(-2px);
-}
-
-.pillSecondaryButton {
-  background-color: transparent;
-  color: var(--ifm-font-color-base) !important;
-  font-size: 1.05rem;
-  font-weight: 600;
-  padding: 0.85rem 2rem;
-  border-radius: 9999px;
-  border: 1px solid var(--ifm-color-emphasis-300);
-}
-
+/* =========================================
+   3. 特性卡片区域 (Feature Section)
+   ========================================= */
 .mainSection {
   padding: 4rem 0;
 }
