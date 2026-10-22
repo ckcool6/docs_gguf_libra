@@ -12,8 +12,8 @@ import rehypeKatex from 'rehype-katex';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'GGUF libra',
+  tagline: 'LLM client Design Based on Forgetting Mechanism',
   favicon: 'img/my-logo.png',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
