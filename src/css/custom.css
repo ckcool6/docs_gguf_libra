@@ -121,3 +121,12 @@
   color: var(--ifm-color-emphasis-600);
   letter-spacing: 0.02em;
 }
+
+.navbar__logo {
+  margin-right: 20px;
+
+}
+
+.navbar__logo {
+  margin-left: 20px;
+}
