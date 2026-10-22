@@ -70,9 +70,14 @@
   background-color: #f8fafc !important;
 }
 
-[data-theme='dark'] .footer {
-  background-color: #0e0f11 !important;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+[data-theme='dark'] .navbar {
+  background-color: var(--ifm-background-color) !important;
+  /* 彻底抹掉所有阴影和边框 */
+  box-shadow: none !important;
+  border-bottom: none !important;
+  /* 去掉半透明穿透与毛玻璃 */
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
 }
 
 .minimalFooter {
