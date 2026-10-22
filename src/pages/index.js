@@ -421,7 +421,6 @@ export default function Home() {
 
   return (
     <Layout
-      title="GGUF Libra"
       description="Local LLM client designed with a forgetting mechanism, branching conversation trees, and AST-level code chunking."
     >
       <HomepageHeader />
