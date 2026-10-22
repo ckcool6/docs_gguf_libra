@@ -7,108 +7,107 @@ import Heading from '@theme/Heading';
 import styles from './index.module.css';
 import Translate, { translate } from '@docusaurus/Translate';
 
-
 // =========================================
-// 3 个展台的数据源（黄色、蓝色、绿色主题）
+// 3 Showcase Sections (Data Source)
 // =========================================
 const getShowcaseSections = () => [
-  // 第 1 组 (左图右文)
+  // Section 1: Forgetting Mechanism & Dynamic Memory Rank (Yellow/Orange)
   {
     items: [
       {
         title: translate({
           id: 'homepage.showcase.s1.item1.title',
-          message: '打造专属外观',
+          message: 'The Philosophy of Forgetting: Taming Context Drift',
         }),
         desc: translate({
           id: 'homepage.showcase.s1.item1.desc',
-          message: '随心所欲定制主题色彩、深浅模式及布局细节，让文档站点精准贴合品牌调性。',
+          message: 'LLMs should not hoard trivial interactions. Indiscriminate history accumulation dilutes attention and inflates token budgets. Strategic pruning keeps the reasoning path sharp and focused.',
         }),
-        image: '/img/image_left.png',
+        image: '/img/yellow.png',
         bgColor: '#fbbc04',
       },
       {
         title: translate({
           id: 'homepage.showcase.s1.item2.title',
-          message: '智能扩展与模块化',
+          message: 'Dynamic Weight Decay & data.bin Storage',
         }),
         desc: translate({
           id: 'homepage.showcase.s1.item2.desc',
-          message: '支持通过插件与 Hook 灵活扩展功能，从搜索组件到图表集成一应俱全。',
+          message: 'Every memory node is dynamically scored based on access frequency, semantic importance, and temporal decay, then persisted compactly into a zero-overhead binary storage.',
         }),
-        image: '/img/image_center.png',
+        image: '/img/showcase-weight.png',
         bgColor: '#f9ab00',
       },
       {
         title: translate({
           id: 'homepage.showcase.s1.item3.title',
-          message: '灵活的多页面路由',
+          message: 'Heaviest Memory Recall Engine',
         }),
         desc: translate({
           id: 'homepage.showcase.s1.item3.desc',
-          message: '全自动化的路由解析机制，让知识库管理、博客写作和产品发布顺畅无阻。',
+          message: 'Under constrained context windows, GGUF Libra automatically prioritizes and injects the highest-weighted historical invariants into prompts, ensuring consistent persona and facts.',
         }),
-        image: '/img/image_right.png',
+        image: '/img/showcase-recall.png',
         bgColor: '#e37400',
       },
     ],
   },
 
-  // 第 2 组 (左文右图 - reverse)
+  // Section 2: Git-Style Dialogue Branching (Blue - Reverse)
   {
     items: [
       {
         title: translate({
           id: 'homepage.showcase.s2.item1.title',
-          message: '跨设备无缝浏览与同步',
+          message: 'Git-Style Dialogue Trees & Context Isolation',
         }),
         desc: translate({
           id: 'homepage.showcase.s2.item1.desc',
-          message: '在任意设备上登录账户，即可访问已保存的阅读进度、书签与配置，一切尽在掌握。',
+          message: 'Fork conversations at any turn. Experiment with diverse prompts, edge-case tests, or debug sessions in parallel without polluting your primary chat history.',
         }),
-        image: '/img/image_center.png',
+        image: '/img/blue.png',
         bgColor: '#4285f4',
       },
       {
         title: translate({
           id: 'homepage.showcase.s2.item2.title',
-          message: '自动填充与密码管理',
+          message: 'Cross-Branch Context Handover',
         }),
         desc: translate({
           id: 'homepage.showcase.s2.item2.desc',
-          message: '借助现代化安全策略，自动同步你的配置，节省重复输入的繁琐时间。',
+          message: 'Concluded an exploratory branch? Distill its core takeaways into structured summaries and propagate them back into the main timeline effortlessly.',
         }),
-        image: '/img/image_right.png',
+        image: '/img/showcase-summary.png',
         bgColor: '#1a73e8',
       },
     ],
   },
 
-  // 第 3 组 (左图右文)
+  // Section 3: AST-Based Code Chunking & Local-First Architecture (Green)
   {
     items: [
       {
         title: translate({
           id: 'homepage.showcase.s3.item1.title',
-          message: '借助静态优化，节省宝贵时间',
+          message: 'AST-Aware Chunking: Syntax-Preserving Code RAG',
         }),
         desc: translate({
           id: 'homepage.showcase.s3.item1.desc',
-          message: '极速预渲染与资源压缩优化，为用户呈现秒级加载的极致阅读体验。',
+          message: 'Beyond arbitrary fixed-character splitting. Tree-sitter parses the concrete syntax trees of Go, Python, and C/C++, isolating coherent scopes, classes, and complete functions.',
         }),
-        image: '/img/image_right.png',
+        image: '/img/green.png',
         bgColor: '#34a853',
       },
       {
         title: translate({
           id: 'homepage.showcase.s3.item2.title',
-          message: '内置隐私与内容防护',
+          message: 'Zero Bloat: Pure Go Backend & Native Web UI',
         }),
         desc: translate({
           id: 'homepage.showcase.s3.item2.desc',
-          message: '全面隔离外部脚本风险，默认开启严格的 CSP 安全策略与隐私沙盒。',
+          message: 'Built with Go standard library and dependency-free vanilla web technologies. Native integration with llama.cpp/llama-server. No heavy database daemons, 100% private and offline-capable.',
         }),
-        image: '/img/image_left.png',
+        image: '/img/showcase-local.png',
         bgColor: '#1e8e3e',
       },
     ],
@@ -116,7 +115,7 @@ const getShowcaseSections = () => [
 ];
 
 // =========================================
-// 拟态浏览器视窗组件 (顶部画廊使用)
+// macOS Mimic Browser Window
 // =========================================
 function BrowserWindow({ title, isActive, isDark, onClick, children }) {
   return (
@@ -135,7 +134,7 @@ function BrowserWindow({ title, isActive, isDark, onClick, children }) {
           <span className={clsx(styles.macDot, styles.dotGreen)} />
         </div>
         <div className={styles.browserTab}>
-          <span className={styles.tabIcon}>{isDark ? '💻' : '📄'}</span>
+          <span className={styles.tabIcon}>{isDark ? '💻' : '⚡'}</span>
           <span className={styles.tabTitle}>{title}</span>
         </div>
       </div>
@@ -147,7 +146,7 @@ function BrowserWindow({ title, isActive, isDark, onClick, children }) {
 }
 
 // =========================================
-// 顶部动态焦点画廊组件 (保留原版流畅手感)
+// Showcase Reel Component
 // =========================================
 function ShowcaseReel() {
   const scrollRef = useRef(null);
@@ -260,29 +259,30 @@ function ShowcaseReel() {
       <div className={styles.showcaseWrapper} ref={scrollRef}>
         <div className={styles.showcaseTrack}>
           <BrowserWindow
-            title="快速上手指南"
+            title="Memory Decay & Weights"
             isActive={activeIndex === 0}
             isDark={true}
             onClick={() => scrollToCard(0)}
           >
-            <img src="/img/image_left.png" alt="preview 1" className={styles.screenImg} />
+            <img src="/img/showcase-memory.png" alt="Memory Decay and Weights" className={styles.screenImg} />
           </BrowserWindow>
 
           <BrowserWindow
-            title="系统概览主页"
+            title="Git-Style Branching Workspace"
             isActive={activeIndex === 1}
+            isDark={true}
             onClick={() => scrollToCard(1)}
           >
-            <img src="/img/image_center.png" alt="preview 2" className={styles.screenImg} />
+            <img src="/img/showcase-main.png" alt="Dialogue Branching Workspace" className={styles.screenImg} />
           </BrowserWindow>
 
           <BrowserWindow
-            title="构建与部署"
+            title="AST-Aware Code RAG Engine"
             isActive={activeIndex === 2}
             isDark={true}
             onClick={() => scrollToCard(2)}
           >
-            <img src="/img/image_right.png" alt="preview 3" className={styles.screenImg} />
+            <img src="/img/showcase-ast.png" alt="AST RAG Engine" className={styles.screenImg} />
           </BrowserWindow>
         </div>
       </div>
@@ -291,7 +291,7 @@ function ShowcaseReel() {
 }
 
 // =========================================
-// Google Chrome 风格联动特性展台组件
+// 联动特性展台组件 (纯图片展示版)
 // =========================================
 function InteractiveShowcase({ sectionData, reverse = false }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -299,21 +299,17 @@ function InteractiveShowcase({ sectionData, reverse = false }) {
 
   return (
     <div className={clsx(styles.featureShowcase, reverse && styles.reverse)}>
-      {/* 视觉卡片区 */}
-      <div
-        className={styles.showcaseVisual}
-        style={{ backgroundColor: current.bgColor }}
-      >
-        <div className={styles.visualInner}>
-          <img
-            src={current.image}
-            alt={current.title}
-            className={styles.showcaseInnerImg}
-          />
-        </div>
+      {/* 视觉区：直接完整展示图片卡片 */}
+      <div className={styles.showcaseVisual}>
+        <img
+          key={current.image} /* 加 key 可以在切换图片时触发平滑淡入动画 */
+          src={current.image}
+          alt={current.title}
+          className={styles.showcaseInnerImg}
+        />
       </div>
 
-      {/* 文本列表区 */}
+      {/* 文本列表区保持不变 */}
       <div className={styles.showcaseContent}>
         {sectionData.items.map((item, idx) => {
           const isActive = idx === activeIndex;
@@ -348,37 +344,62 @@ function InteractiveShowcase({ sectionData, reverse = false }) {
 }
 
 // =========================================
-// 头部 Hero 区域
+// Hero Header Section (左右分栏布局)
 // =========================================
 function HomepageHeader() {
-  const { siteConfig } = useDocusaurusContext();
   return (
     <header className={styles.heroSection}>
       <div className="container">
-        <Heading as="h1" className={styles.heroTitle}>{siteConfig.title}</Heading>
-        <p className={styles.heroSubtitle}>{siteConfig.tagline}</p>
-        <div className={styles.actionRow}>
-          <Link className={clsx('button', styles.pillPrimaryButton)} to="/docs/intro">
-            <Translate id="homepage.button.getStarted">立即体验 →</Translate>
-          </Link>
-          <Link className={clsx('button', styles.pillSecondaryButton)} to="https://github.com">
-            GitHub
-          </Link>
+        <div className={styles.heroSplit}>
+          {/* 左侧：文字与按钮 */}
+          <div className={styles.heroContent}>
+            <Heading as="h1" className={styles.heroTitle}>GGUF Libra</Heading>
+            <p className={styles.heroSubtitle}>
+              <Translate id="homepage.tagline">
+                A role play focused client built specifically for local LLMs
+              </Translate>
+            </p>
+            <div className={styles.actionRow}>
+              <Link className={clsx('button', styles.pillPrimaryButton)} to="https://github.com/ckcool6/GGUF_Libra/releases">
+                <Translate id="homepage.button.getStarted">Windows Download</Translate>
+              </Link>
+              <Link
+                className={clsx('button', styles.pillSecondaryButton)}
+                to="https://github.com/ckcool6/GGUF_Libra"
+              >
+                GitHub
+              </Link>
+            </div>
+          </div>
+
+          {/* 右侧：图片展示区 */}
+          <div className={styles.heroImageWrapper}>
+            <img
+              src="/img/hero.jpg" // 换成你在 static/img/ 下的图片文件名
+              alt="GGUF Libra Workspace Preview"
+              className={styles.heroImage}
+            />
+          </div>
         </div>
       </div>
+
+      {/* 下方的拟态横向画廊依然保留 */}
       <ShowcaseReel />
     </header>
   );
 }
 
 // =========================================
-// 页面主入口
+// Main Entry Page
 // =========================================
 export default function Home() {
   const showcaseSections = getShowcaseSections();
 
   return (
-    <Layout>
+    <Layout
+      title="GGUF Libra"
+      description="Local LLM client designed with a forgetting mechanism, branching conversation trees, and AST-level code chunking."
+    >
       <HomepageHeader />
       <main className={styles.mainShowcaseSection}>
         <div className="container">

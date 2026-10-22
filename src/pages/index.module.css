@@ -1,44 +1,69 @@
 /* =========================================
-   1. Hero 区域 (标题、描述、按钮组)
+   1. Hero 区域 (左右分割排版)
    ========================================= */
 .heroSection {
   padding: 4.5rem 0 1rem;
-  text-align: center;
   overflow: hidden;
 }
 
+/* 左右分栏容器 */
+.heroSplit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3.5rem;
+  margin-bottom: 5rem;
+  text-align: left;
+  /* 改为左对齐 */
+}
+
+/* 左侧文本区 */
+.heroContent {
+  flex: 1.1;
+}
+
 .heroTitle {
-  font-size: clamp(2.5rem, 6vw, 4.2rem);
+  font-size: clamp(2.5rem, 5vw, 4.2rem);
   font-weight: 800;
   letter-spacing: -0.03em;
-  margin-bottom: 0.8rem;
+  line-height: 1.1;
+  margin-bottom: 1.2rem;
 }
 
 .heroSubtitle {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
+  line-height: 1.6;
   color: var(--ifm-color-emphasis-600);
-  max-width: 650px;
-  margin: 0 auto 2.2rem;
+  max-width: 540px;
+  margin: 0 0 2.2rem 0;
+  /* 清除居中，保持左对齐 */
 }
 
-/* 按钮组 */
+
+/* 按钮组容器 */
 .actionRow {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 1rem;
-  margin-bottom: 8rem;
+  margin-top: 2rem;
+  /* 增加一点与上方副标题的间距 */
+  margin-bottom: 0;
 }
 
+/* 补回这两个按钮的样式 ↓↓↓ */
 .pillPrimaryButton {
   background-color: var(--ifm-color-primary);
   color: #fff !important;
   font-size: 1.05rem;
   font-weight: 600;
-  padding: 0.85rem 2.5rem;
+  padding: 0.85rem 2.2rem;
   border-radius: 9999px;
   border: none;
   box-shadow: 0 4px 14px color-mix(in srgb, var(--ifm-color-primary) 35%, transparent);
   transition: transform 0.2s, box-shadow 0.2s;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none !important;
 }
 
 .pillPrimaryButton:hover {
@@ -55,10 +80,93 @@
   border-radius: 9999px;
   border: 1px solid var(--ifm-color-emphasis-300);
   transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none !important;
 }
 
 .pillSecondaryButton:hover {
   background-color: var(--ifm-color-emphasis-100);
+}
+
+/* 右侧图片包装容器（提供夜景氛围光晕） */
+.heroImageWrapper {
+  flex: 0.9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+/* 绝招：根据画面的蓝紫夜景 + 金黄街灯，在背后打一层淡淡的弥散光晕 */
+.heroImageWrapper::before {
+  content: '';
+  position: absolute;
+  width: 90%;
+  height: 90%;
+  /* 从核心的电光蓝向外自然弥散成柔和的冷天蓝 */
+  background: radial-gradient(circle,
+      rgba(37, 99, 235, 0.35) 0%,
+      /* 核心深蓝 */
+      rgba(96, 165, 250, 0.20) 45%,
+      /* 柔和天蓝过渡 */
+      transparent 75%);
+  filter: blur(55px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.heroImage {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  max-height: 480px;
+  max-width: 100%;
+
+  /* 1. 彻底撤销透明图专用的羽化遮罩 */
+  -webkit-mask-image: none;
+  mask-image: none;
+  filter: none;
+
+  /* 2. 现代科技感大圆角 */
+  border-radius: 22px;
+
+  /* 3. 极细微质感边框（防止浅色区域融入背景） */
+  border: 1px solid rgba(0, 0, 0, 0.08);
+
+  /* 4. 精致分层的立体悬浮阴影 */
+  box-shadow:
+    0 20px 40px -12px rgba(0, 0, 0, 0.16),
+    0 10px 18px -6px rgba(0, 0, 0, 0.08);
+
+  object-fit: cover;
+  display: block;
+}
+
+/* 移动端响应式：屏幕变窄时自动变回上下堆叠居中 */
+@media (max-width: 996px) {
+  .heroSplit {
+    flex-direction: column;
+    text-align: center;
+    gap: 3rem;
+    margin-bottom: 3.5rem;
+  }
+
+  .heroSubtitle {
+    margin: 0 auto 2rem auto;
+  }
+
+  .actionRow {
+    justify-content: center;
+  }
+
+  .heroImageWrapper {
+    width: 100%;
+  }
+
+  .heroImage {
+    max-width: 440px;
+  }
 }
 
 /* =========================================
@@ -194,13 +302,12 @@
 }
 
 /* =========================================
-   3. Google Chrome 联动特性展台样式
+   3. 特性展台样式 (纯图卡片版)
    ========================================= */
 .mainShowcaseSection {
   padding: 4rem 0 7rem;
 }
 
-/* 单个展台栅格容器 */
 .featureShowcase {
   display: flex;
   align-items: center;
@@ -212,51 +319,67 @@
   margin-bottom: 0;
 }
 
-/* 反转排版：左文右图 */
 .featureShowcase.reverse {
   flex-direction: row-reverse;
 }
 
-/* 视觉区容器 (大圆角卡片) */
+
 .showcaseVisual {
   flex: 1.1;
-  border-radius: 32px;
-  padding: 3.5rem 2.5rem 0;
-  min-height: 480px;
   display: flex;
   justify-content: center;
-  align-items: flex-end;
+  align-items: center;
+
   position: relative;
-  overflow: hidden;
-  transition: background-color 0.4s ease;
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
-}
+  min-height: 480px;
 
-/* 视觉区内部的模拟窗口/手机 UI 卡片 */
-.visualInner {
-  width: 100%;
-  max-width: 440px;
-  background: var(--ifm-card-background-color);
-  border-radius: 20px 20px 0 0;
-  box-shadow: 0 16px 40px -10px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
-  transform-origin: bottom center;
-  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.visualInner:hover {
-  transform: translateY(-6px);
 }
 
 .showcaseInnerImg {
-  width: 100%;
-  height: 340px;
-  object-fit: cover;
-  object-position: top center;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 480px;
+  object-fit: contain;
   display: block;
+
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  /* 核心：只对上下边缘做轻微羽化，中间 90% 完全清晰 */
+  -webkit-mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 4%,
+      rgba(0, 0, 0, 1) 90%,
+      /* 主体 100% 清晰呈现 */
+      rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 1) 4%,
+      rgba(0, 0, 0, 1) 90%,
+      rgba(0, 0, 0, 0) 100%);
+
+  /* 柔和轮廓立体光影 */
+  filter:
+    drop-shadow(0 0 6px rgba(0, 0, 0, 0.03)) drop-shadow(0 14px 28px rgba(0, 0, 0, 0.08));
+
+  animation: tachieFadeIn 0.35s ease-out;
 }
 
-/* 内容区 */
+@keyframes tachieFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 内容区及文字样式保持不变 */
 .showcaseContent {
   flex: 0.9;
   display: flex;
@@ -264,7 +387,6 @@
   gap: 1.8rem;
 }
 
-/* 特性条目 */
 .featureItem {
   padding: 0.6rem 0 0.6rem 1.6rem;
   border-left: 3.5px solid transparent;
@@ -285,7 +407,6 @@
   transition: color 0.25s ease;
 }
 
-/* 激活状态 */
 .featureItem.active {
   border-left-color: var(--ifm-color-primary);
   background-color: transparent;
@@ -312,45 +433,5 @@
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-.showcaseCta {
-  margin-top: 1rem;
-  padding-left: 1.6rem;
-}
-
-.ctaLink {
-  font-weight: 600;
-  font-size: 1.05rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.3rem;
-  color: var(--ifm-color-primary);
-  text-decoration: none;
-}
-
-.ctaLink:hover {
-  text-decoration: underline;
-}
-
-/* 移动端响应式处理 */
-@media (max-width: 996px) {
-
-  .featureShowcase,
-  .featureShowcase.reverse {
-    flex-direction: column;
-    gap: 3rem;
-    margin-bottom: 5rem;
-  }
-
-  .showcaseVisual {
-    width: 100%;
-    min-height: 360px;
-    padding: 2.5rem 1.5rem 0;
-  }
-
-  .featureItemTitle {
-    font-size: 1.3rem;
   }
 }

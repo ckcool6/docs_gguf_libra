@@ -38,7 +38,7 @@ const config = {
   // useful metadata like html lang. For example, if your site is Chinese, you
   // may want to replace "en" with "zh-Hans".
   i18n: {
-    defaultLocale: 'zh-Hans',
+    defaultLocale: 'en',
     locales: ['zh-Hans', 'en'],
     localeConfigs: {
       'zh-Hans': { label: '简体中文' },
@@ -83,7 +83,7 @@ const config = {
         respectPrefersColorScheme: true,
       },
       navbar: {
-        title: 'My Site',
+        title: 'GGUF Libra',
         logo: {
           alt: 'My Site Logo',
           src: 'img/my-logo.png',
@@ -97,14 +97,9 @@ const config = {
             type: 'docSidebar',
             sidebarId: 'tutorialSidebar',
             position: 'left',
-            label: '指南',
+            label: 'Tutorial',
           },
-          { to: '/blog', label: '发布日志', position: 'left' },
-          {
-            href: 'https://github.com/facebook/docusaurus',
-            label: 'GitHub',
-            position: 'right',
-          },
+          { to: '/blog', label: 'Release Notes', position: 'left' },
         ],
       },
       footer: {
