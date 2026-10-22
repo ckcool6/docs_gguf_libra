@@ -12,7 +12,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 3.5rem;
-  margin-bottom: 5rem;
+  margin-bottom: 7.5rem;
   text-align: left;
   /* 改为左对齐 */
 }
@@ -149,7 +149,7 @@
     flex-direction: column;
     text-align: center;
     gap: 3rem;
-    margin-bottom: 3.5rem;
+    margin-bottom: 5rem;
   }
 
   .heroSubtitle {
@@ -182,7 +182,7 @@
   width: 100%;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 2.5rem 0 4rem;
+  padding: 5rem 0 4rem;
   scrollbar-width: none;
 }
 

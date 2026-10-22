@@ -56,17 +56,7 @@ const config = {
           remarkPlugins: [remarkMath],
           rehypePlugins: [rehypeKatex],
         },
-        blog: {
-          showReadingTime: false,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          // Useful options to enforce blogging best practices
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -99,7 +89,6 @@ const config = {
             position: 'left',
             label: 'Tutorial',
           },
-          { to: '/blog', label: 'Release Notes', position: 'left' },
         ],
       },
       footer: {
@@ -109,18 +98,23 @@ const config = {
         <div class="minimalFooter">
           <!-- 社交与联系链接 -->
           <div class="minimalFooterLinks">
-            <a href="https://github.com/你的GitHub用户名" target="_blank" rel="noopener noreferrer">
-              GitHub ↗
+            <a href="https://github.com/ckcool6" target="_blank" rel="noopener noreferrer">
+              My GitHub ↗
             </a>
             <span class="minimalDot">·</span>
-            <a href="mailto:hi@yourdomain.com">
-              hi@yourdomain.com ↗
-            </a>
+            <span style="display: inline-flex; align-items: center; gap: 6px;">
+            <!-- 简洁的邮箱 SVG 图标 -->
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.85;">
+              <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+              <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+            </svg>
+            rzdtjb@gmail.com
+          </span>
           </div>
 
           <!-- 底部极简版权声明 -->
           <div class="minimalFooterCopy">
-            Copyright <strong>你的名字</strong> · © ${new Date().getFullYear()} All Rights Reserved.
+            Copyright <strong>ckcool6</strong> · © ${new Date().getFullYear()} All Rights Reserved.
           </div>
         </div>
       `,

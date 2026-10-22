@@ -17,11 +17,11 @@ const getShowcaseSections = () => [
       {
         title: translate({
           id: 'homepage.showcase.s1.item1.title',
-          message: 'The Philosophy of Forgetting: Taming Context Drift',
+          message: 'A client built around forgetting: stop interacting, and the character will literally forget your story',
         }),
         desc: translate({
           id: 'homepage.showcase.s1.item1.desc',
-          message: 'LLMs should not hoard trivial interactions. Indiscriminate history accumulation dilutes attention and inflates token budgets. Strategic pruning keeps the reasoning path sharp and focused.',
+          message: 'Why build a mechanic like this? Because even an LLM needs to forget. Forgetting prevents the context window from getting polluted with junk, and honestly—it actually gives you a reason to keep coming back and chatting with the character.',
         }),
         image: '/img/yellow.png',
         bgColor: '#fbbc04',
@@ -29,25 +29,23 @@ const getShowcaseSections = () => [
       {
         title: translate({
           id: 'homepage.showcase.s1.item2.title',
-          message: 'Dynamic Weight Decay & data.bin Storage',
+          message: 'So how do you make the character remember your story?',
         }),
         desc: translate({
           id: 'homepage.showcase.s1.item2.desc',
-          message: 'Every memory node is dynamically scored based on access frequency, semantic importance, and temporal decay, then persisted compactly into a zero-overhead binary storage.',
+          message: 'Just chat more! Keep talking, let your shared history settle and build up, and eventually it all crystallizes into data.bin.',
         }),
-        image: '/img/showcase-weight.png',
         bgColor: '#f9ab00',
       },
       {
         title: translate({
           id: 'homepage.showcase.s1.item3.title',
-          message: 'Heaviest Memory Recall Engine',
+          message: 'What even is data.bin?',
         }),
         desc: translate({
           id: 'homepage.showcase.s1.item3.desc',
-          message: 'Under constrained context windows, GGUF Libra automatically prioritizes and injects the highest-weighted historical invariants into prompts, ensuring consistent persona and facts.',
+          message: 'data.bin is a custom database. It stores the summary chains of your conversations, not the raw chat logs word-for-word. When you reminisce about the past, it doesn’t do a dumb brute-force search over the whole file either—it uses a specific algorithm to recall only what actually mattered. Click the terminal icon on the UI to pop open the TUI, type the save command, and boom: your current summary chain is saved.',
         }),
-        image: '/img/showcase-recall.png',
         bgColor: '#e37400',
       },
     ],
@@ -59,11 +57,11 @@ const getShowcaseSections = () => [
       {
         title: translate({
           id: 'homepage.showcase.s2.item1.title',
-          message: 'Git-Style Dialogue Trees & Context Isolation',
+          message: 'Driving the plot forward through parallel universes',
         }),
         desc: translate({
           id: 'homepage.showcase.s2.item1.desc',
-          message: 'Fork conversations at any turn. Experiment with diverse prompts, edge-case tests, or debug sessions in parallel without polluting your primary chat history.',
+          message: 'Why design this? Because advancing a storyline requires trial and error. If a dialogue goes downhill or gets boring, just discard it—exactly like a novelist striking through a bad paragraph. The UI reflects this too: switch back to the main timeline, and all side-branch bubbles get strikethrough lines, hinting they were discarded (though it doesn’t physically wipe them out). If the side story turned out great, you can merge it. Heads up: merging actually clears the side-chain summaries, grafting only the very last node’s summary onto the main timeline.',
         }),
         image: '/img/blue.png',
         bgColor: '#4285f4',
@@ -71,13 +69,12 @@ const getShowcaseSections = () => [
       {
         title: translate({
           id: 'homepage.showcase.s2.item2.title',
-          message: 'Cross-Branch Context Handover',
+          message: 'So you mean discarding is actually a good thing?',
         }),
         desc: translate({
           id: 'homepage.showcase.s2.item2.desc',
-          message: 'Concluded an exploratory branch? Distill its core takeaways into structured summaries and propagate them back into the main timeline effortlessly.',
+          message: 'Yes, that’s exactly what I mean. Real writers write novels by constantly discarding drafts—they rarely "merge" cleanly. I want to preserve the user’s trial-and-error journey, just like looking at an author’s raw manuscript full of crossed-out pages.',
         }),
-        image: '/img/showcase-summary.png',
         bgColor: '#1a73e8',
       },
     ],
@@ -89,11 +86,11 @@ const getShowcaseSections = () => [
       {
         title: translate({
           id: 'homepage.showcase.s3.item1.title',
-          message: 'AST-Aware Chunking: Syntax-Preserving Code RAG',
+          message: 'Privacy first',
         }),
         desc: translate({
           id: 'homepage.showcase.s3.item1.desc',
-          message: 'Beyond arbitrary fixed-character splitting. Tree-sitter parses the concrete syntax trees of Go, Python, and C/C++, isolating coherent scopes, classes, and complete functions.',
+          message: 'No login, no sign-up—because it simply never needed one in the first place. No SQL-style database storing your chat history, because there is no reason to hoard your private logs anyway. If you want a backup, just click export to a .txt file and throw it into whatever folder you like.',
         }),
         image: '/img/green.png',
         bgColor: '#34a853',
@@ -101,13 +98,12 @@ const getShowcaseSections = () => [
       {
         title: translate({
           id: 'homepage.showcase.s3.item2.title',
-          message: 'Zero Bloat: Pure Go Backend & Native Web UI',
+          message: 'Prompt crafting with YAML',
         }),
         desc: translate({
           id: 'homepage.showcase.s3.item2.desc',
-          message: 'Built with Go standard library and dependency-free vanilla web technologies. Native integration with llama.cpp/llama-server. No heavy database daemons, 100% private and offline-capable.',
+          message: 'At least this is way less of a headache to write than JSON.',
         }),
-        image: '/img/showcase-local.png',
         bgColor: '#1e8e3e',
       },
     ],
@@ -146,86 +142,106 @@ function BrowserWindow({ title, isActive, isDark, onClick, children }) {
 }
 
 // =========================================
-// Showcase Reel Component
+// Showcase Reel Component (已修复点击无响应与冲突问题)
 // =========================================
 function ShowcaseReel() {
   const scrollRef = useRef(null);
+  const trackRef = useRef(null);
   const [activeIndex, setActiveIndex] = useState(1);
   const activeIndexRef = useRef(1);
+
+  // 用 ref 保存动画相关的状态，确保点击函数和滚轮事件能共享控制
+  const animStateRef = useRef({
+    targetScroll: 0,
+    isAnimating: false,
+    rafId: null,
+  });
+
+  // 统一的平滑滚动驱动器
+  const animateTo = (target) => {
+    const el = scrollRef.current;
+    if (!el) return;
+
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    const clampedTarget = Math.max(0, Math.min(maxScroll, target));
+    animStateRef.current.targetScroll = clampedTarget;
+
+    if (animStateRef.current.isAnimating) return;
+
+    animStateRef.current.isAnimating = true;
+
+    const updateScroll = () => {
+      const current = el.scrollLeft;
+      const diff = animStateRef.current.targetScroll - current;
+
+      if (Math.abs(diff) > 0.5) {
+        el.scrollLeft += diff * 0.12; // 缓动因子
+        checkActiveCard();
+        animStateRef.current.rafId = requestAnimationFrame(updateScroll);
+      } else {
+        el.scrollLeft = animStateRef.current.targetScroll;
+        checkActiveCard();
+        animStateRef.current.isAnimating = false;
+      }
+    };
+
+    animStateRef.current.rafId = requestAnimationFrame(updateScroll);
+  };
+
+  const checkActiveCard = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (maxScroll <= 0) return;
+
+    const progress = el.scrollLeft / maxScroll;
+    let nextIndex = 1;
+
+    if (progress < 0.28) {
+      nextIndex = 0;
+    } else if (progress > 0.72) {
+      nextIndex = 2;
+    } else {
+      nextIndex = 1;
+    }
+
+    if (nextIndex !== activeIndexRef.current) {
+      activeIndexRef.current = nextIndex;
+      setActiveIndex(nextIndex);
+    }
+  };
 
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
-    let targetScroll = (el.scrollWidth - el.clientWidth) / 2;
-    el.scrollLeft = targetScroll;
-
-    let isAnimating = false;
-    let rafId = null;
-
-    const checkActiveCard = () => {
-      const maxScroll = el.scrollWidth - el.clientWidth;
-      if (maxScroll <= 0) return;
-
-      const progress = el.scrollLeft / maxScroll;
-      let nextIndex = 1;
-
-      if (progress < 0.28) {
-        nextIndex = 0;
-      } else if (progress > 0.72) {
-        nextIndex = 2;
-      } else {
-        nextIndex = 1;
-      }
-
-      if (nextIndex !== activeIndexRef.current) {
-        activeIndexRef.current = nextIndex;
-        setActiveIndex(nextIndex);
-      }
-    };
-
-    const updateScroll = () => {
-      const current = el.scrollLeft;
-      const diff = targetScroll - current;
-
-      if (Math.abs(diff) > 0.5) {
-        el.scrollLeft += diff * 0.12;
-        checkActiveCard();
-        rafId = requestAnimationFrame(updateScroll);
-      } else {
-        el.scrollLeft = targetScroll;
-        checkActiveCard();
-        isAnimating = false;
-      }
-    };
+    // 初始居中到第 2 个卡片
+    const initialScroll = (el.scrollWidth - el.clientWidth) / 2;
+    el.scrollLeft = initialScroll;
+    animStateRef.current.targetScroll = initialScroll;
 
     const handleWheel = (e) => {
       if (e.deltaY === 0) return;
 
       const maxScroll = el.scrollWidth - el.clientWidth;
       const isScrollingDown = e.deltaY > 0;
+      const current = animStateRef.current.targetScroll;
 
-      const isAtRight = targetScroll >= maxScroll - 8;
-      const isAtLeft = targetScroll <= 8;
+      const isAtRight = current >= maxScroll - 8;
+      const isAtLeft = current <= 8;
 
+      // 如果已经在边缘且继续同方向滑动，把滚轮控制权还给外层页面纵向滚动
       if ((isScrollingDown && isAtRight) || (!isScrollingDown && isAtLeft)) {
-        e.preventDefault();
-        window.scrollBy({ top: e.deltaY, behavior: 'auto' });
         return;
       }
 
       e.preventDefault();
-      targetScroll = Math.max(0, Math.min(maxScroll, targetScroll + e.deltaY * 1.5));
-
-      if (!isAnimating) {
-        isAnimating = true;
-        rafId = requestAnimationFrame(updateScroll);
-      }
+      animateTo(current + e.deltaY * 1.5);
     };
 
     const handleNativeScroll = () => {
-      if (!isAnimating) {
-        targetScroll = el.scrollLeft;
+      if (!animStateRef.current.isAnimating) {
+        animStateRef.current.targetScroll = el.scrollLeft;
         checkActiveCard();
       }
     };
@@ -236,53 +252,59 @@ function ShowcaseReel() {
     return () => {
       el.removeEventListener('wheel', handleWheel);
       el.removeEventListener('scroll', handleNativeScroll);
-      if (rafId) cancelAnimationFrame(rafId);
+      if (animStateRef.current.rafId) {
+        cancelAnimationFrame(animStateRef.current.rafId);
+      }
     };
   }, []);
 
+  // 点击卡片：精准根据 DOM 位置把卡片居中到视口
   const scrollToCard = (index) => {
     const el = scrollRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollWidth - el.clientWidth;
+    const track = trackRef.current;
+    if (!el || !track) return;
 
-    if (index === 0) {
-      el.scrollTo({ left: 0, behavior: 'smooth' });
-    } else if (index === 1) {
-      el.scrollTo({ left: maxScroll / 2, behavior: 'smooth' });
-    } else if (index === 2) {
-      el.scrollTo({ left: maxScroll, behavior: 'smooth' });
-    }
+    const cards = track.children;
+    if (!cards[index]) return;
+
+    const card = cards[index];
+    // 计算让卡片正好处于容器水平正中央的 scrollLeft
+    const target = card.offsetLeft - (el.clientWidth - card.clientWidth) / 2;
+
+    setActiveIndex(index);
+    activeIndexRef.current = index;
+    animateTo(target);
   };
 
   return (
     <div className={styles.showcaseOuterWrapper}>
       <div className={styles.showcaseWrapper} ref={scrollRef}>
-        <div className={styles.showcaseTrack}>
+        <div className={styles.showcaseTrack} ref={trackRef}>
           <BrowserWindow
-            title="Memory Decay & Weights"
+            title="DB view"
             isActive={activeIndex === 0}
             isDark={true}
             onClick={() => scrollToCard(0)}
           >
-            <img src="/img/showcase-memory.png" alt="Memory Decay and Weights" className={styles.screenImg} />
+            <img src="/img/left.png" alt="Memory Decay and Weights" className={styles.screenImg} />
           </BrowserWindow>
 
           <BrowserWindow
-            title="Git-Style Branching Workspace"
+            title="UI"
             isActive={activeIndex === 1}
             isDark={true}
             onClick={() => scrollToCard(1)}
           >
-            <img src="/img/showcase-main.png" alt="Dialogue Branching Workspace" className={styles.screenImg} />
+            <img src="/img/center.png" alt="Dialogue Branching Workspace" className={styles.screenImg} />
           </BrowserWindow>
 
           <BrowserWindow
-            title="AST-Aware Code RAG Engine"
+            title="log"
             isActive={activeIndex === 2}
             isDark={true}
             onClick={() => scrollToCard(2)}
           >
-            <img src="/img/showcase-ast.png" alt="AST RAG Engine" className={styles.screenImg} />
+            <img src="/img/right.png" alt="AST RAG Engine" className={styles.screenImg} />
           </BrowserWindow>
         </div>
       </div>
@@ -291,25 +313,27 @@ function ShowcaseReel() {
 }
 
 // =========================================
-// 联动特性展台组件 (纯图片展示版)
+// 联动特性展台组件 (固定只显示第一张图)
 // =========================================
 function InteractiveShowcase({ sectionData, reverse = false }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  const current = sectionData.items[activeIndex] || sectionData.items[0];
+  // 固定使用该分类的第 1 个条目作为图片展示源
+  const firstItem = sectionData.items[0];
 
   return (
     <div className={clsx(styles.featureShowcase, reverse && styles.reverse)}>
-      {/* 视觉区：直接完整展示图片卡片 */}
+      {/* 视觉区：永远固定显示第一张图片 */}
       <div className={styles.showcaseVisual}>
-        <img
-          key={current.image} /* 加 key 可以在切换图片时触发平滑淡入动画 */
-          src={current.image}
-          alt={current.title}
-          className={styles.showcaseInnerImg}
-        />
+        {firstItem && (
+          <img
+            src={firstItem.image}
+            alt={firstItem.title}
+            className={styles.showcaseInnerImg}
+          />
+        )}
       </div>
 
-      {/* 文本列表区保持不变 */}
+      {/* 文本列表区：依然支持点击切换查看对应说明 */}
       <div className={styles.showcaseContent}>
         {sectionData.items.map((item, idx) => {
           const isActive = idx === activeIndex;
