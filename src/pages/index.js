@@ -421,7 +421,7 @@ export default function Home() {
 
   return (
     <Layout
-      description="Local LLM client designed with a forgetting mechanism, branching conversation trees, and AST-level code chunking."
+      description="A role play focused client built specifically for local LLMs"
     >
       <HomepageHeader />
       <main className={styles.mainShowcaseSection}>
