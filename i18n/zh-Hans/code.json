@@ -36,10 +36,10 @@
     "message": "是的，我就是这个意思。因为本来作家写小说就是不断discard，很少merge的。我希望保留用户试错的过程，就像看作家手稿看到大段删除线一样。"
   },
   "homepage.showcase.s3.item1.title": {
-    "message": "隐私第一"
+    "message": "可导出为txt"
   },
   "homepage.showcase.s3.item1.desc": {
-    "message": "无登陆注册，因为它本来就不需要登陆注册。无SQL风格的数据库存储聊天记录，因为本来就不需要存储你和角色的记录，如果需要备份，点击导出为txt文件，你可以自己创建文件夹备份一下。"
+    "message": "无SQL风格的数据库存储聊天记录，因为本来就不需要存储你和角色的记录，如果需要备份，点击导出为txt文件，你可以自己创建文件夹备份一下。"
   },
   "homepage.showcase.s3.item2.title": {
     "message": "基于yaml的提示词编写"

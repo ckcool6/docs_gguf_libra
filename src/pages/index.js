@@ -86,11 +86,11 @@ const getShowcaseSections = () => [
       {
         title: translate({
           id: 'homepage.showcase.s3.item1.title',
-          message: 'Privacy first',
+          message: 'Exportable to TXT',
         }),
         desc: translate({
           id: 'homepage.showcase.s3.item1.desc',
-          message: 'No login, no sign-up—because it simply never needed one in the first place. No SQL-style database storing your chat history, because there is no reason to hoard your private logs anyway. If you want a backup, just click export to a .txt file and throw it into whatever folder you like.',
+          message: 'No SQL-style database storing your chat history, because there is no reason to hoard your private logs anyway. If you want a backup, just click export to a .txt file and throw it into whatever folder you like.',
         }),
         image: '/img/green.png',
         bgColor: '#34a853',
